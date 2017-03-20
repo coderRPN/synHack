@@ -1,11 +1,11 @@
-package com.thenational.eu.cheque.configuration;
+package com.syntel.hackathon.log.aggregator.configuration;
 
 import javax.ws.rs.ApplicationPath;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
 
-import com.thenational.eu.cheque.resource.ChequeResource;
+import com.syntel.hackathon.log.aggregator.resource.ChequeResource;
 
 @Configuration
 @ApplicationPath("api")

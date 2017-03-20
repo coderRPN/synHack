@@ -14,7 +14,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
-    baseName = 'spring-boot-demo'
+    baseName = 'log-aggregator'
     version =  '0.1.0'
 }
 
@@ -26,23 +26,11 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 dependencies {
-    // tag::jetty[]
-    compile("org.springframework.boot:spring-boot-starter-web") {
-        exclude module: "spring-boot-starter-tomcat"
-    }
-    compile("org.springframework.boot:spring-boot-starter-jetty")
-    // end::jetty[]
-    // tag::actuator[]
+    compile("org.springframework.boot:spring-boot-starter-web") 
     compile("org.springframework.boot:spring-boot-starter-actuator")
-    // end::actuator[]
     compile("org.springframework.boot:spring-boot-starter-jersey")
-    
-    compile("org.springframework:springloaded")
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.boot:spring-boot-starter-activemq")
-    compile("org.apache.activemq:activemq-broker")
+    compile("org.springframework.boot:spring-boot-starter-data-elasticsearch")
     compile("com.fasterxml.jackson.core:jackson-databind")
-    //compile("org.springframework.security.oauth:spring-security-oauth2")
-    
+    runtime("net.java.dev.jna:jna")
     testCompile("junit:junit")
 }
