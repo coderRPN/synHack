@@ -1,4 +1,4 @@
-package com.thenational.eu.cheque.configuration;
+package com.syntel.hackathon.log.aggregator.configuration;
 
 import org.springframework.context.ApplicationContext;
 

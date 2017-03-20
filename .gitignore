@@ -1,0 +1,27 @@
+build/
+web-app/build/
+web-app/.classpath
+bin/
+.gradle
+/classes
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea
+*.iml
+**/*.iml
+*.iws
+**/*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+# Elastic Search
+data
