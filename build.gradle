@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        maven { url "http://repo.maven.apache.org/maven2" }
         mavenCentral()
     }
     dependencies {
@@ -19,11 +20,12 @@ jar {
 }
 
 repositories {
-    mavenCentral()
+   mavenCentral()
+   // maven { url "http://repo.maven.apache.org/maven2" }
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web") 
@@ -33,4 +35,10 @@ dependencies {
     compile("com.fasterxml.jackson.core:jackson-databind")
     runtime("net.java.dev.jna:jna")
     testCompile("junit:junit")
+    
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf:1.5.1.RELEASE")
+    compile("org.springframework.boot:spring-boot-devtools:1.5.1.RELEASE")
+    compile("org.webjars:jquery:2.2.4")
+    compile("org.webjars:bootstrap:3.3.7")
+   
 }
