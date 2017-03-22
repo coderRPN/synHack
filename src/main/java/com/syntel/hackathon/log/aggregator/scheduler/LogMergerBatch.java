@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,21 +44,21 @@ public class LogMergerBatch {
     
     @Value("${elasticsearch.logFilepath}")
     private String logDirectory;
+    
+    @Value("${elasticsearch.processedFilePath}")
+    private String processedFilePath;
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
-    @Scheduled(fixedRate = 10000    )
+    @Scheduled(fixedRate = 100000    )
     public void sendMailToCustomers() {
-        // String logFileDir = logDirectory.toString().trim();
 
         logger.info("sendMailToCustomers Job ran at "
             + dateFormat.format(new Date()));
 
         // List all the new files -
 
-        List<String> results = new ArrayList<String>();
-        
-        logger.info("@@@@@Log file directory : " + logDirectory);
+        logger.info("Log file directory : " + logDirectory);
            
             File[] files = new File(logDirectory.toString().trim()).listFiles();
 
@@ -64,48 +66,49 @@ public class LogMergerBatch {
 
             for (File file : files) {
                 if (file.isFile()) {
-
-                    String prevDateStr = "";
-
-                    try {
-                        FileInputStream fstream = new FileInputStream(file);
-                        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-                        String strLine;
-
-                        StringBuilder strMerger = new StringBuilder();
-                        /* read log line by line */
-                        while ((strLine = br.readLine()) != null) {
-                            /* parse strLine to obtain what you want */
-
-                            strMerger.append(strLine);
-                            StringTokenizer tokenizer = new StringTokenizer(strLine, " ");
-
-                            String dateStr = "";
-                            int counter = 0;
-                            if (tokenizer.countTokens() > 1) {
-                                while (tokenizer.hasMoreTokens() && counter < 2) {
-                                    dateStr += tokenizer.nextToken();
-                                    counter++;
-                                }
-                            }
-                            if (dateStr != null && !dateStr.isEmpty()) {
-                                prevDateStr = dateStr;
-                                logService.save(new LogObject(UUID.randomUUID().toString() ,strMerger.toString(),dateStr));
-                                // reset the log counter
-                                strMerger = new StringBuilder();
-                            }
-
-                        }
-                        fstream.close();
-                    } catch (Exception e) {
-                        System.err.println("Error: " + e.getMessage());
-                    }
+                    indexLogFile(file);
 
                 }
             }
+    }
 
-            printElasticSearchInfo();
+    private void indexLogFile(File logFile) {
+        try {
+            FileInputStream fstream = new FileInputStream(logFile);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            String strLine = "";
 
+            StringBuilder strMerger = new StringBuilder();
+            /* read log line by line */
+            while ((strLine = br.readLine()) != null) {
+                /* parse strLine to obtain what you want */
+
+                strMerger.append(strLine);
+                StringTokenizer tokenizer = new StringTokenizer(strLine, " ");
+
+                String dateStr = "";
+                int counter = 0;
+                if (tokenizer.countTokens() > 1) {
+                    while (tokenizer.hasMoreTokens() && counter < 2) {
+                        dateStr += tokenizer.nextToken();
+                        counter++;
+                    }
+                }
+                if (dateStr != null && !dateStr.isEmpty()) {
+                    logService.save(new LogObject(UUID.randomUUID().toString() ,strMerger.toString(),dateStr));
+                    // reset the log counter
+                    strMerger = new StringBuilder();
+                }
+            }
+            fstream.close();
+            // Move file into Processed directory..
+            
+            Files.move(new File((logDirectory.toString().trim() + "/" + logFile.getName())).toPath(), 
+                new File(processedFilePath.toString().trim() + logFile.getName()+ "_" + new Date()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            
+        } catch (Exception e) {
+            logger.error("Error: " + e);
+        }
     }
     
     //useful for info
