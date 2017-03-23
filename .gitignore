@@ -1,7 +1,8 @@
-build/
 web-app/build/
 web-app/.classpath
-bin/
+bin
+build
+processed
 .gradle
 /classes
 # Eclipse
