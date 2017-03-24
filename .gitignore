@@ -1,6 +1,4 @@
 build/
-web-app/build/
-web-app/.classpath
 bin/
 .gradle
 /classes
@@ -20,8 +18,5 @@ bin/
 .DS_Store
 
 # Maven
-log/
+/log/
 target/
-
-# Elastic Search
-data
