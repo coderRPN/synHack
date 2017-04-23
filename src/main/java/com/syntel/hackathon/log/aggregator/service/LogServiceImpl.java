@@ -1,5 +1,10 @@
 package com.syntel.hackathon.log.aggregator.service;
 
+import static com.syntel.hackathon.log.aggregator.util.LogAggregatorConstants.ES_HITS_SIZE;
+import static com.syntel.hackathon.log.aggregator.util.LogAggregatorConstants.ES_INDEX_NAME;
+import static com.syntel.hackathon.log.aggregator.util.LogAggregatorConstants.SEARCH_FIELD_2;
+import static com.syntel.hackathon.log.aggregator.util.LogAggregatorConstants.SEARCH_FILED_1;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +30,6 @@ import com.google.common.collect.Lists;
 import com.syntel.hackathon.log.aggregator.model.LogObject;
 import com.syntel.hackathon.log.aggregator.model.SearchObject;
 import com.syntel.hackathon.log.aggregator.repository.LogRepository;
-import static com.syntel.hackathon.log.aggregator.util.LogAggregatorConstants.*;
 
 @Service
 public class LogServiceImpl implements LogService {

@@ -24,13 +24,20 @@ targetCompatibility = 1.8
 
 repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "http://invesdwin.de/artifactory/invesdwin-oss" }
     mavenCentral()
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.boot:spring-boot-starter-data-elasticsearch") 
+    compile("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+
+    compile("org.springframework:spring-aspects:3.2.4.RELEASE")
+    
+    //To enable loadTimeWeaving with spring-instrumentation
+    compile("de.invesdwin:invesdwin-instrument:1.0.0-SNAPSHOT")
+
     compile("com.fasterxml.jackson.core:jackson-databind")
     compile("org.apache.commons:commons-lang3:3.0")
     compile("org.apache.commons:commons-collections4:4.0")
